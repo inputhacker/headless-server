@@ -1,0 +1,57 @@
+#!/bin/sh
+
+if [ "$XDG_RUNTIME_DIR" = "" ]; then
+	export XDG_RUNTIME_DIR=/run
+fi
+
+WINFO_RUN_DIR="$XDG_RUNTIME_DIR/pepper"
+
+if [ ! -d "$WINFO_RUN_DIR" ]; then
+	echo "Error: no ${WINFO_RUN_DIR} directory exist."
+	exit 1
+fi
+
+cd $WINFO_RUN_DIR
+
+function usage()
+{
+	echo "Usage> # winfo {command}"
+	echo ""
+	echo "	 Supported commands:"
+	echo ""
+	echo "	   protocol_trace_on (turn on wayland protocol trace)"
+	echo "	   protocol_trace_off (turn off wayland protocol trace)"
+	echo "	   stdout (redirect STDOUT to a file : /run/pepper/stdout.txt)"
+	echo "	   stderr (redirect STDERR to a file : /run/pepper/stderr.txt)"
+	echo "	   keygrab_status"
+	echo "	   keymap"
+	echo "	   topvwins"
+	echo "	   connected_clients (display connected clients info : pid, uid, gid, socket fd)"
+	echo "	   reslist (display resources info of the connected clients"
+	echo "	   help (display this help message)"
+	echo ""
+	echo "   To execute commands, just create/remove/update a file with the commands above."
+	echo "   Please refer to the following examples."
+	echo ""
+	echo "	   # winfo protocol_trace_on   : enable event trace"
+	echo "	   # winfo protocol_trace_off  : disable event trace"
+	echo "	   # winfo stdout              : redirect STDOUT"
+	echo "	   # winfo stderr              : redirect STDERR"
+	echo "	   # winfo keygrab_status      : display keygrab status"
+	echo "	   # winfo keymap              : display keymap"
+	echo "	   # winfo topvwins            : display top/visible window stack"
+	echo "	   # winfo connected_clients   : display connected clients information"
+	echo "	   # winfo reslist             : display each resources information of connected clients"
+	echo "	   # winfo help                : display this help message"
+	echo ""
+}
+
+if [ "$1" = "" ]; then
+	usage
+	exit 1
+fi
+
+CMD="$1"
+
+rm -f ${CMD} ; touch ${CMD}
+echo "winfo ${CMD}"

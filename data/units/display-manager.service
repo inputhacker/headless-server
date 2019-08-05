@@ -1,0 +1,12 @@
+[Unit]
+Description=Headless Display Manager
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/sysconfig/display-manager.env
+SmackProcessLabel=System
+ExecStartPre=/usr/bin/bash -c "/usr/bin/mkdir -p ${XDG_RUNTIME_DIR}/pepper/"
+ExecStart=/usr/bin/headless_server
+
+[Install]
+WantedBy=graphical.target
